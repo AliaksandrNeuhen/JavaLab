@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE products PUBLIC "products.dtd" "products.dtd">
+<!--  -->
+<p:shop xmlns:p="http://www.shop.com/products"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.shop.com/products products.xsd">
+<category name="Food">
+	<subcategory name="Breadstuff">
+		<product name="Long loaf">
+			<provider>Minsk Plant Bakery</provider>
+			<model>BS100</model>
+			<date-of-issue>10-17-2014</date-of-issue>
+			<color>White</color>
+			<price>8000</price>
+		</product>
+		<product name="Black bread">
+			<provider>Minsk Plant Bakery</provider>
+			<model>BS200</model>
+			<date-of-issue>10-17-2014</date-of-issue>
+			<color>Black</color>
+			<price>7000</price>
+		</product>
+	</subcategory>
+	<subcategory name="Meat">
+		<product name="Beef">
+			<provider>Minsk Meat Processing Plant</provider>
+			<model>MM100</model>
+			<date-of-issue>10-17-2014</date-of-issue>
+			<color>Red</color>
+			<price>80000</price>
+		</product>
+	</subcategory>
+	<subcategory name="Groats">
+		<product name="Semolina">
+			<provider>Minsk Plant Bakery</provider>
+			<model>GG100</model>
+			<date-of-issue>10-17-2014</date-of-issue>
+			<color>White</color>
+			<price>20000</price>
+		</product>
+	</subcategory>
+</category>
+<category name="Drinking">
+	<subcategory name="Alcohol">
+		<product name="Beer Alivaria">
+			<provider>Alivaria plant</provider>
+			<model>DB001</model>
+			<date-of-issue>10-17-2014</date-of-issue>
+			<color>Brown</color>
+			<price>20000</price>
+		</product>
+	</subcategory>
+	<subcategory name="Non-alcohol">
+		<product name="Coca-Cola">
+			<provider>Coca-Cola inc.</provider>
+			<model>DN100</model>
+			<date-of-issue>10-27-2014</date-of-issue>
+			<color>Black</color>
+			<price>14000</price>
+		</product>
+	</subcategory>
+</category>
+<category name="Household">
+	<subcategory name="Hugiene">
+		<product name="Toothbrush">
+			<provider>Colgate</provider>
+			<model>HT100</model>
+			<date-of-issue>10-27-2014</date-of-issue>
+			<color>White</color>
+			<price>30000</price>
+		</product>
+		<product name="Soap">
+			<provider>Dove</provider>
+			<model>HS100</model>
+			<date-of-issue>10-27-2014</date-of-issue>
+			<color>White</color>
+			<price>20000</price>
+		</product>
+	</subcategory>
+</category>
+</p:shop>
