@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "struts-config_1_1.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="NewsForm"
+			type="com.epam.testapp.presentation.form.NewsForm" />
+	</form-beans>
+	
+	<global-exceptions>
+	    <exception
+	      key="error.global_message"
+	      type="java.lang.Exception"
+	      path="/error_def" />
+	    <exception 
+	      key="error.news_not_found"
+	      type="com.epam.testapp.exception.NewsNotFoundException"
+	      path="/error_def" />
+	</global-exceptions>
+	<action-mappings>
+ 	<action path="/ModuleAction" name="NewsForm" input="/news_edit_def"
+				scope="session"	 type="org.springframework.web.struts.DelegatingActionProxy"
+				validate="true" parameter="method">
+				<forward name="index" path="/news_list_def" redirect="false"/>
+				<forward name="news_list" path="/news_list_def" redirect="false"/>
+				<forward name="news_edit" path="/news_edit_def" redirect="false"/>
+				<forward name="news_view" path="/news_view_def" redirect="false"/>
+				<forward name="error" path="/error_def" redirect="false"/>
+		</action>
+	</action-mappings>
+	
+	<controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>	
+	
+	<message-resources parameter="text"></message-resources>
+	
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
+	</plug-in>
+ 	<plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation"
+			value="/WEB-INF/applicationContext.xml" />
+	</plug-in>
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+    </plug-in>
+    	
+</struts-config>

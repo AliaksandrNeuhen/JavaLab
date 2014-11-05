@@ -1,0 +1,12 @@
+com.epam.testapp.database
+com.epam.testapp.database.connection
+com.epam.testapp.database.dao
+com.epam.testapp.database.impl
+com.epam.testapp.exception
+com.epam.testapp.listener
+com.epam.testapp.model
+com.epam.testapp.presentation.action
+com.epam.testapp.presentation.form
+com.epam.testapp.service
+com.epam.testapp.service.impl
+com.epam.testapp.util
