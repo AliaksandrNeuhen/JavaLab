@@ -9,16 +9,19 @@
   <welcome-file-list>
   	<welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  <listener>
+  	<listener-class>com.epam.xmltransforming.listener.ServletContextListener</listener-class>
+  </listener>
   
   <servlet>
   	<description></description>
-  	<display-name>XMLParserServlet</display-name>
-  	<servlet-name>XMLParserServlet</servlet-name>
-  	<servlet-class>com.epam.xmltransforming.controller.XMLParserServlet</servlet-class>
+  	<display-name>XSLTServlet</display-name>
+  	<servlet-name>XSLTServlet</servlet-name>
+  	<servlet-class>com.epam.xmltransforming.controller.XSLTServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>XMLParserServlet</servlet-name>
-  	<url-pattern>/parser</url-pattern>
+  	<servlet-name>XSLTServlet</servlet-name>
+  	<url-pattern>/shop</url-pattern>
   </servlet-mapping>
 </web-app>

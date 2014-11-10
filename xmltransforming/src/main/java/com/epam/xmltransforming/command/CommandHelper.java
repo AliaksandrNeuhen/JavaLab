@@ -10,8 +10,12 @@ public class CommandHelper {
 	
 	private CommandHelper(){
 		commands.put(CommandName.NO_SUCH_COMMAND, new ErrorCommand());
-		commands.put(CommandName.SHOW_CONTENT, new ShowContentCommand());
 		commands.put(CommandName.SHOW_CATEGORIES, new ShowCategoriesCommand());
+		commands.put(CommandName.SHOW_SUBCATEGORIES, new ShowSubcategoriesCommand());
+		commands.put(CommandName.SHOW_PRODUCTS, new ShowProductsCommand());
+		commands.put(CommandName.BACK, new BackCommand());
+		commands.put(CommandName.ADD_PRODUCT, new AddProductCommand());
+		commands.put(CommandName.SAVE_PRODUCT, new SaveProductCommand());
 	}
 	
 	public static CommandHelper getInstance(){
@@ -26,6 +30,9 @@ public class CommandHelper {
 			if (null != name) {
 				command = commands.get(name);
 			} else {
+				command = commands.get(CommandName.NO_SUCH_COMMAND);
+			}
+			if (command == null) {
 				command = commands.get(CommandName.NO_SUCH_COMMAND);
 			}
 		} catch (IllegalArgumentException e) {
