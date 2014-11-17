@@ -2,13 +2,18 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	version="1.0" xmlns:r="xalan://com.epam.xmltransformation"
 	xmlns:product="xalan://com.epam.xmltransforming.entity.Product">
-	<xsl:output method="xml" />
-	<xsl:param name="product" />
+    <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
+ <!-- 	<xsl:param name="product" />
 	<xsl:param name="categoryname" />
 	<xsl:param name="subcategoryname" />
-
-	<xsl:template match="/|node()|@*">
-		<xsl:copy>
+-->
+	<xsl:strip-space elements="*"/>
+	<xsl:template name="save">
+		<xsl:apply-templates />
+	</xsl:template>
+	
+	<xsl:template match="node()|@*">
+ 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" />
 		</xsl:copy>
 	</xsl:template>
@@ -18,23 +23,30 @@
  			<xsl:apply-templates select="@*|node()" /> 
 			<xsl:element name="product">
 				<xsl:attribute name="name">
-					<xsl:value-of select="product:getName($product)" />
+					<xsl:value-of select="$name" />
 				</xsl:attribute>
 				<xsl:element name="provider">
-					<xsl:value-of select="product:getProvider($product)" />
+					<xsl:value-of select="$provider" />
 				</xsl:element>
 				<xsl:element name="model">
-					<xsl:value-of select="product:getModel($product)" />
+					<xsl:value-of select="$model" />
 				</xsl:element>
 				<xsl:element name="date-of-issue">
-					<xsl:value-of select="product:getDateOfIssue($product)"></xsl:value-of>
+					<xsl:value-of select="$dateOfIssue"></xsl:value-of>
 				</xsl:element>
 				<xsl:element name="color">
-					<xsl:value-of select="product:getColor($product)" />
+					<xsl:value-of select="$color" />
 				</xsl:element>
-				<xsl:element name="price">
-					<xsl:value-of select="product:getPrice($product)" />
-				</xsl:element>
+				<xsl:choose>
+					<xsl:when test="$notInStock = 'true'">
+						<xsl:element name="notinstock"/>
+					</xsl:when>
+					<xsl:when test="not($notInStock)">
+						<xsl:element name="price">
+							<xsl:value-of select="$price" />
+						</xsl:element>
+					</xsl:when>
+				</xsl:choose>
 			</xsl:element>
 		</xsl:copy>
 	</xsl:template>

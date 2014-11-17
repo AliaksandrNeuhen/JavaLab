@@ -1,45 +1,38 @@
 package com.epam.xmltransforming.command;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 
-import javax.servlet.ServletContext;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import com.epam.xmltransforming.exception.CommandException;
+import com.epam.xmltransforming.logic.ResultCreator;
+import com.epam.xmltransforming.logic.SourceCreator;
 
 public class ShowCategoriesCommand implements ICommand {
-
+	private static final String SOURCE_PATH = "/WEB-INF/classes/products.xml";
+	private static final String XSLT_SOURCE_PATH = "/xslt/category_list.xslt";
+	
 	public void execute(HttpServletRequest request, HttpServletResponse response) 
 			throws CommandException {
 		try {			
 			// Set input
-			HttpSession session = request.getSession();
-			ServletContext context = session.getServletContext();
-			
-			String xmlPath = context.getRealPath("/WEB-INF/classes/products.xml");
-			File sourceFile = new File(xmlPath);
-			Source source = new StreamSource(sourceFile);
+			Source source = SourceCreator.createFileSource(request, SOURCE_PATH);
 			
 			// Set output
-			OutputStream responseOutputStream = response.getOutputStream();
-			StreamResult result = new StreamResult(responseOutputStream);
+			Result result = ResultCreator.createResponseOutputStreamResult(response);
+			
 			// Create transformer
-			String xsltPath = context.getRealPath("/xslt/category_list.xslt");
-			File xsltFile = new File(xsltPath);
-			Source xslt = new StreamSource(xsltFile);
+			Source xsltSource = SourceCreator.createFileSource(request, XSLT_SOURCE_PATH);
 			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Transformer transformer = tFactory.newTransformer(xslt);
+			Transformer transformer = tFactory.newTransformer(xsltSource);
+			
 			// Execute transformation
 			transformer.transform(source, result);
 		} catch (TransformerConfigurationException e) {

@@ -15,7 +15,6 @@ public class CommandHelper {
 		commands.put(CommandName.SHOW_PRODUCTS, new ShowProductsCommand());
 		commands.put(CommandName.BACK, new BackCommand());
 		commands.put(CommandName.ADD_PRODUCT, new AddProductCommand());
-		commands.put(CommandName.SAVE_PRODUCT, new SaveProductCommand());
 	}
 	
 	public static CommandHelper getInstance(){

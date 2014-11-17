@@ -7,7 +7,7 @@
 	<!ELEMENT subcategory (product*)>
 	<!ATTLIST subcategory name CDATA #REQUIRED>
 	
-	<!ELEMENT product (provider?, model?, date-of-issue?, color?, price?)>
+	<!ELEMENT product (provider?, model?, date-of-issue?, color?, price?, notinstock?)>
 	<!ATTLIST product name CDATA #REQUIRED>
 	
 	<!ELEMENT provider (#PCDATA)>
@@ -15,3 +15,4 @@
 	<!ELEMENT date-of-issue (#PCDATA)>
 	<!ELEMENT color (#PCDATA)>
 	<!ELEMENT price (#PCDATA)>
+	<!ELEMENT notinstock (#PCDATA)>

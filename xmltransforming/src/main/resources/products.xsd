@@ -34,7 +34,10 @@
 		<element name="model" type="tns:ModelType"/>
 		<element name="date-of-issue" type="tns:DateOfIssueType"/>
 		<element name="color" type="tns:ColorType"/>
-		<element name="price" type="tns:PriceType"/>
+		<choice>
+			<element name="price" type="tns:PriceType"/>
+			<element name="notinstock" type="tns:NotInStockType"/>
+		</choice>
 	</sequence>
 	<attribute type="string" name="name" use="required"/>
 </complexType>
@@ -62,6 +65,13 @@
 <simpleType name="PriceType">
 	<restriction base="integer"/>
 </simpleType>
+
+<simpleType name="NotInStockType">
+	<restriction base="string">
+		<maxLength value="0"/>
+	</restriction>
+</simpleType>
+
 </schema>
 
 

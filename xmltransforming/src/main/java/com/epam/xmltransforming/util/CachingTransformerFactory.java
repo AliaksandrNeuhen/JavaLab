@@ -12,8 +12,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.stream.StreamSource;
 
-import net.sf.saxon.TransformerFactoryImpl;
-
+//import net.sf.saxon.TransformerFactoryImpl;
+import org.apache.xalan.processor.TransformerFactoryImpl;
 public class CachingTransformerFactory 
 				extends TransformerFactoryImpl{
 	private static Map<String, TemplatesCacheEntry> templatesCache = 

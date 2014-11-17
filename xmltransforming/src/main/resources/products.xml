@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE products PUBLIC "products.dtd" "products.dtd">
-<!--  -->
 <p:shop xmlns:p="http://www.shop.com/products"
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://www.shop.com/products products.xsd">

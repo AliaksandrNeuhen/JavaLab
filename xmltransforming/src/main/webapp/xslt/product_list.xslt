@@ -56,4 +56,9 @@
 	</td>
 </xsl:template>
 
+<xsl:template match="notinstock">
+	<td>
+		<xsl:text>N/A</xsl:text>
+	</td>
+</xsl:template>
 </xsl:stylesheet>
