@@ -56,7 +56,6 @@ public class CachingTransformerFactory
 		}
 		// If no entries was found or this entry was obsolete
 		if (templatesCacheEntry == null) {
-			  System.out.println("Loading transformation [" + fileAbsolutePath + "].");
 			// If this file doesn't exist, throw an exception
 			if (!file.exists()) {
 				throw new TransformerConfigurationException("Requested transformation [" + 
@@ -71,7 +70,7 @@ public class CachingTransformerFactory
 			// Save this entry to the cache
 			write(fileAbsolutePath, templatesCacheEntry);
 		} else {
-			System.out.println("Using cached transformation [" + fileAbsolutePath + "].");
+//			System.out.println("Using cached transformation [" + fileAbsolutePath + "].");
 		}
 		Transformer resultTransformer = templatesCacheEntry.templates.newTransformer();
 		return resultTransformer;

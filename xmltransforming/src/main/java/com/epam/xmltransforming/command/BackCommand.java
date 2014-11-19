@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.epam.xmltransforming.exception.CommandException;
 
-public class BackCommand implements ICommand {
+public final class BackCommand implements ICommand {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response)

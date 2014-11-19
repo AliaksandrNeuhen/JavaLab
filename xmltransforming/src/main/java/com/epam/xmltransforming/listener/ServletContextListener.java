@@ -7,30 +7,26 @@ import javax.servlet.ServletContextEvent;
  *
  */
 public class ServletContextListener implements javax.servlet.ServletContextListener {
-
+	private static final String TRANSFORM_FACTORY_INTERFACE = "javax.xml.transform.TransformerFactory";
+	private static final String TRANSFORM_FACTORY_CLASS = "com.epam.xmltransforming.util.CachingTransformerFactory";
+	
     /**
      * Default constructor. 
      */
     public ServletContextListener() {
-        // TODO Auto-generated constructor stub
     }
 
 	/**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
     public void contextInitialized(ServletContextEvent sce)  { 
-         // TODO Auto-generated method stub
-    	System.setProperty("javax.xml.transform.TransformerFactory", 
-    			"com.epam.xmltransforming.util.CachingTransformerFactory");
-    	System.out.println("System property set to " + 
-    			System.getProperty("javax.xml.transform.TransformerFactory"));
+    	System.setProperty(TRANSFORM_FACTORY_INTERFACE, TRANSFORM_FACTORY_CLASS);
     }
 
 	/**
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
      */
     public void contextDestroyed(ServletContextEvent sce)  { 
-         // TODO Auto-generated method stub
     }
 	
 }

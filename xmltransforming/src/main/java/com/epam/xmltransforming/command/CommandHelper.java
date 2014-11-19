@@ -3,7 +3,7 @@ package com.epam.xmltransforming.command;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandHelper {
+public final class CommandHelper {
 	private static final CommandHelper instance = new CommandHelper();
 	
 	private Map<CommandName, ICommand> commands = new HashMap<CommandName, ICommand>();

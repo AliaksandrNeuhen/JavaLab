@@ -28,6 +28,9 @@ public final class ProductFieldsCheck {
 			+ "(can be positive value or Not In Stock)";
 	
 	private static final String MODEL_PATTERN = "[A-Z]{2}[0-9]{3}";
+	private static final String DATE_COMMON_PATTERN = "[0-3][0-9]-[01][0-9]-[0-9]{4}";
+	private static final String DATE_PATTERN = "dd-MM-yyyy";
+	private static final String PRICE_PATTERN = "[0-9]+";
 	
 	private Map<String, String> errorsMap;
 	private Boolean resultOfValidation;
@@ -61,13 +64,17 @@ public final class ProductFieldsCheck {
 		if (dateOfIssue == null || dateOfIssue.length() == 0) {
 			errorsMap.put(DATE_STRING, DATE_EMPTY_ERROR);
 		} else {
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-			format.setLenient(false);
-			try {
-				format.parse(dateOfIssue);	
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if (!dateOfIssue.matches(DATE_COMMON_PATTERN)) {
 				errorsMap.put(DATE_STRING, DATE_FORMAT_ERROR);
+			} else {
+				SimpleDateFormat format = new SimpleDateFormat(DATE_PATTERN);
+				format.setLenient(false);
+				try {
+					format.parse(dateOfIssue);	
+				} catch (ParseException e) {
+					e.printStackTrace();
+					errorsMap.put(DATE_STRING, DATE_FORMAT_ERROR);
+				}	
 			}
 		}
 		
@@ -77,11 +84,10 @@ public final class ProductFieldsCheck {
 			errorsMap.put(COLOR_STRING, COLOR_TOO_LONG_ERROR);
 		}
 		
-		// TODO Implement that price can be 0(Not In Stock)
 		System.out.println(notInStock);
 		Boolean notInStockBoolean = Boolean.valueOf(notInStock);
 		if (!notInStockBoolean){
-			if (price == null || price.length() == 0) {
+			if (price == null || price.length() == 0 || !price.matches(PRICE_PATTERN)) {
 				errorsMap.put(PRICE_STRING, PRICE_FORMAT_ERROR);
 			}
 		}

@@ -20,6 +20,9 @@
 	<xsl:choose>
 	<xsl:when test="not($validationMethod)">
 	<html>
+		<head>
+			<script type="text/javascript" src="js/pricechanging.js"/>
+		</head>
 		<body>
 			<div style="align:center;">
 			<form action="shop" method="POST">
@@ -30,58 +33,44 @@
 						<xsl:value-of select="validator:getErrorsForName($validatorObject)"/>
 					</xsl:if>
 				</div>
-				<div style="display:block;">
+				<div>
 					Category <input type="text" value="{$categoryname}"/>
 				</div>
-				<div style="display:block;">
+				<div>
 					Subcategory <input type="text" value="{$subcategoryname}"/>
 				</div>
-				<div style="display:block;">
+				<div>
 					Provider <input type="text" name="provider" value="{$provider}"/>
 					<xsl:if test="$tryingAgain = 'true'">
 						<xsl:value-of select="validator:getErrorsForProvider($validatorObject)"/>
 					</xsl:if>
 				</div>
-				<div style="display:block;">
+				<div>
 					Model <input type="text" name="model" value="{$model}"/>
 					<xsl:if test="$tryingAgain = 'true'">
 						<xsl:value-of select="validator:getErrorsForModel($validatorObject)"/>
 					</xsl:if>
 				</div>
-				<div style="display:block;">
+				<div>
 					Date of issue <input type="text" name="dateOfIssue" value="{$dateOfIssue}"/>
 					<xsl:if test="$tryingAgain = 'true'">
 						<xsl:value-of select="validator:getErrorsForDateOfIssue($validatorObject)"/>
 					</xsl:if>
 				</div>
-				<div style="display:block;">
+				<div>
 					Color <input type="text" name="color" value="{$color}"/>
 					<xsl:if test="$tryingAgain = 'true'">
 						<xsl:value-of select="validator:getErrorsForColor($validatorObject)"/>
 					</xsl:if>
 				</div>
-				<div style="display:block;">
+				<div>
 					Price <input type="text" name="price" value="{$price}" id="priceText" />
-					 Not In Stock <input type="checkbox" id="notInStockCheckbox" name="notInStock" value="checked" />
-					<script language="javascript">
-						var checkbox = document.getElementById("notInStockCheckbox");
-						checkbox.addEventListener("change", function(event){
-							var price = document.getElementById("priceText");
-							if (price.hasAttribute('readonly')) {
-								price.removeAttribute('readonly');
-								price.style.backgroundColor = "white"
-							} else {
-								price.setAttribute('readonly', 'readonly');
-								price.style.backgroundColor = "darkgray";
-							}
-						}, false);
-						
-					</script>
+					 Not In Stock <input type="checkbox" id="notInStockCheckbox" name="notInStock" value="checked" onchange="priceCheckboxChanged();"/>
 					<xsl:if test="$tryingAgain = 'true'">
 						<xsl:value-of select="validator:getErrorsForPrice($validatorObject)"/>
 					</xsl:if>
 				</div>
-				<div style="display:block;">
+				<div>
 					<input type="hidden" name="isValid" value="{$validationMethod}"/>
 					<input type="hidden" name="tryingAgain" value="true"/>
 					<input type="submit" value="Save"/>

@@ -1,6 +1,8 @@
 package com.epam.xmltransforming.command;
 
 import java.io.IOException;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +18,7 @@ import com.epam.xmltransforming.exception.CommandException;
 import com.epam.xmltransforming.logic.ResultCreator;
 import com.epam.xmltransforming.logic.SourceCreator;
 
-public class ShowSubcategoriesCommand implements ICommand {
+public final class ShowSubcategoriesCommand implements ICommand {
 	private static final String SOURCE_PATH = "/WEB-INF/classes/products.xml";
 	private static final String XSLT_SOURCE_PATH = "/xslt/subcategory_list.xslt";
 	private static final String CATEGORY_NAME_REQUEST_PARAM = "categoryname";
@@ -48,10 +50,16 @@ public class ShowSubcategoriesCommand implements ICommand {
 			} else {
 				session.setAttribute(PREV_CATEGORY_NAME_SESSION_ATTR, categoryName);
 			}
-			transformer.setParameter(CATEGORY_NAME_REQUEST_PARAM, categoryName);
-
-			// Execute transformation
-			transformer.transform(source, result);
+			transformer.setParameter(CATEGORY_NAME_REQUEST_PARAM, categoryName);	
+			ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+			ReadLock readLock = readWriteLock.readLock();
+			readLock.lock();
+			try {
+				// Execute transformation
+				transformer.transform(source, result);
+			} finally {
+				readLock.unlock();
+			}
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {

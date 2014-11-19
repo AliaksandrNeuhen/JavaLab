@@ -1,6 +1,8 @@
 package com.epam.xmltransforming.command;
 
 import java.io.IOException;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +17,7 @@ import com.epam.xmltransforming.exception.CommandException;
 import com.epam.xmltransforming.logic.ResultCreator;
 import com.epam.xmltransforming.logic.SourceCreator;
 
-public class ShowCategoriesCommand implements ICommand {
+public final class ShowCategoriesCommand implements ICommand {
 	private static final String SOURCE_PATH = "/WEB-INF/classes/products.xml";
 	private static final String XSLT_SOURCE_PATH = "/xslt/category_list.xslt";
 	
@@ -34,7 +36,14 @@ public class ShowCategoriesCommand implements ICommand {
 			Transformer transformer = tFactory.newTransformer(xsltSource);
 			
 			// Execute transformation
-			transformer.transform(source, result);
+			ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+			ReadLock readLock = readWriteLock.readLock();
+			readLock.lock();
+			try {
+				transformer.transform(source, result);	
+			} finally {
+				readLock.unlock();
+			}
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {
