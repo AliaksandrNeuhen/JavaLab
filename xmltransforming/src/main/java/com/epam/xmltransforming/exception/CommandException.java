@@ -1,6 +1,9 @@
 package com.epam.xmltransforming.exception;
 
-
+/**
+ * Exception class using for detecting errors in ICommand-implementing classes
+ * 
+ */
 public class CommandException extends ServletException{
 	private static final long serialVersionUID = 1l;
 	

@@ -1,5 +1,10 @@
 package com.epam.xmltransforming.entity;
 
+/**
+ * Product entity
+ * 
+ */
+
 public class Product implements Cloneable{
 	private String name;
 	private String model;

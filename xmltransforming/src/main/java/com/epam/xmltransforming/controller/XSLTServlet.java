@@ -13,6 +13,11 @@ import com.epam.xmltransforming.command.CommandHelper;
 import com.epam.xmltransforming.command.ICommand;
 import com.epam.xmltransforming.exception.CommandException;
 
+/**
+ * Main servlet class
+ * 
+ */
+
 public final class XSLTServlet extends HttpServlet {
 	private static final long serialVersionUID = 1l;
 	private static final Logger log = Logger.getLogger(XSLTServlet.class);

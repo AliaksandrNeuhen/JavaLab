@@ -1,5 +1,10 @@
 package com.epam.xmltransforming.exception;
 
+/**
+ * Main project exception class
+ * 
+ */
+
 public class ServletException extends Exception {
 	private static final long serialVersionUID = 1l;
 	

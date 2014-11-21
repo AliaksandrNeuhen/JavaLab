@@ -14,12 +14,23 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
 import com.epam.xmltransforming.exception.CommandException;
-import com.epam.xmltransforming.logic.ResultCreator;
-import com.epam.xmltransforming.logic.SourceCreator;
+import com.epam.xmltransforming.util.ResultCreator;
+import com.epam.xmltransforming.util.SourceCreator;
+
+/**
+ * Command for showing categories from XML file
+ * 
+ */
 
 public final class ShowCategoriesCommand implements ICommand {
 	private static final String SOURCE_PATH = "/WEB-INF/classes/products.xml";
-	private static final String XSLT_SOURCE_PATH = "/xslt/category_list.xslt";
+	private static final String XSLT_SOURCE_PATH = "/xslt/category_list.xsl";
+	
+	// Exception messages
+	
+	private static final String TRANSFORMER_CONFIGURATION_EXCEPTION_MESSAGE = "Erorr in configurating transformer";
+	private static final String TRANSFORMER_EXCEPTION_MESSAGE = "Can't perform transformation";
+	private static final String IO_EXCEPTION_MESSAGE = "Can't perform output";
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response) 
 			throws CommandException {
@@ -45,11 +56,11 @@ public final class ShowCategoriesCommand implements ICommand {
 				readLock.unlock();
 			}
 		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
+			throw new CommandException(TRANSFORMER_CONFIGURATION_EXCEPTION_MESSAGE, e);
 		} catch (TransformerException e) {
-			e.printStackTrace();
+			throw new CommandException(TRANSFORMER_EXCEPTION_MESSAGE, e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new CommandException(IO_EXCEPTION_MESSAGE, e);
 		}
 	}
 }

@@ -3,7 +3,8 @@ package com.epam.xmltransforming.listener;
 import javax.servlet.ServletContextEvent;
 
 /**
- * Application Lifecycle Listener implementation class ServletContextListener
+ * Application Lifecycle Listener implementation class ServletContextListener.
+ * It is used for changing system property to use custom TransformerFactory class
  *
  */
 public class ServletContextListener implements javax.servlet.ServletContextListener {

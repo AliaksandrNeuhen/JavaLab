@@ -1,4 +1,4 @@
-package com.epam.xmltransforming.logic;
+package com.epam.xmltransforming.util;
 
 import java.io.File;
 
@@ -8,8 +8,19 @@ import javax.servlet.http.HttpSession;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+/**
+ * Class for creating Source objects
+ * 
+ */
+
 public class SourceCreator {
 
+	/**
+	 * Creates Source object from file
+	 * @param request - http request. It is used for getting real path from servlet context
+	 * @param path - source path
+	 * @return Source object
+	 */
 	public static Source createFileSource(HttpServletRequest request, String path) {
 		String sourcePath = getRealPath(request, path);
 		File sourceFile = new File(sourcePath);
@@ -18,6 +29,12 @@ public class SourceCreator {
 		return source;
 	}
 	
+	/**
+	 * Gets real path of the file
+	 * @param request - http request. It is used for getting real path from servlet request
+	 * @param path - file path
+	 * @return real path of the file
+	 */
 	public static String getRealPath(HttpServletRequest request, String path){
 		HttpSession session = request.getSession();
 		ServletContext context = session.getServletContext();

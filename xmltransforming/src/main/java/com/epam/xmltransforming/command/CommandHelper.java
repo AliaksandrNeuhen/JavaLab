@@ -3,9 +3,15 @@ package com.epam.xmltransforming.command;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class for getting access to existing commands by it's name.
+ * 
+ */
+
 public final class CommandHelper {
 	private static final CommandHelper instance = new CommandHelper();
 	
+	// Map containing existing commands
 	private Map<CommandName, ICommand> commands = new HashMap<CommandName, ICommand>();
 	
 	private CommandHelper(){
@@ -37,7 +43,6 @@ public final class CommandHelper {
 		} catch (IllegalArgumentException e) {
 			command = commands.get(CommandName.NO_SUCH_COMMAND);
 		}	
-		System.out.println(command.toString());
 		return command;
 	}
 }

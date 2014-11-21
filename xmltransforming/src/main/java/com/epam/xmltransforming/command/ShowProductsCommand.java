@@ -15,14 +15,25 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
 import com.epam.xmltransforming.exception.CommandException;
-import com.epam.xmltransforming.logic.ResultCreator;
-import com.epam.xmltransforming.logic.SourceCreator;
+import com.epam.xmltransforming.util.ResultCreator;
+import com.epam.xmltransforming.util.SourceCreator;
+
+/**
+ * Command for showing products from XML file
+ * 
+ */
 
 public final class ShowProductsCommand implements ICommand {
 	private static final String SOURCE_PATH = "/WEB-INF/classes/products.xml";
-	private static final String XSLT_SOURCE_PATH = "/xslt/product_list.xslt";
+	private static final String XSLT_SOURCE_PATH = "/xslt/product_list.xsl";
 	private static final String SUBCATEGORY_NAME_REQUEST_PARAM = "subcategoryname";
 	private static final String PREV_SUBCATEGORY_SESSION_ATTR = "prev_subcategory";
+	
+	// Exception messages
+	
+	private static final String TRANSFORMER_CONFIGURATION_EXCEPTION_MESSAGE = "Erorr in configurating transformer";
+	private static final String TRANSFORMER_EXCEPTION_MESSAGE = "Can't perform transformation";
+	private static final String IO_EXCEPTION_MESSAGE = "Can't perform output";
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response)
@@ -63,11 +74,11 @@ public final class ShowProductsCommand implements ICommand {
 		}
 
 	} catch (TransformerConfigurationException e) {
-		e.printStackTrace();
+		throw new CommandException(TRANSFORMER_CONFIGURATION_EXCEPTION_MESSAGE, e);
 	} catch (TransformerException e) {
-		e.printStackTrace();
+		throw new CommandException(TRANSFORMER_EXCEPTION_MESSAGE, e);
 	} catch (IOException e) {
-		e.printStackTrace();
+		throw new CommandException(IO_EXCEPTION_MESSAGE, e);
 	}
 
 	}

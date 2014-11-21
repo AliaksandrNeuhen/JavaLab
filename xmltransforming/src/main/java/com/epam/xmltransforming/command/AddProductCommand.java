@@ -19,17 +19,34 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import com.epam.xmltransforming.exception.CommandException;
-import com.epam.xmltransforming.logic.ResultCreator;
-import com.epam.xmltransforming.logic.SourceCreator;
-import com.epam.xmltransforming.util.ProductFieldsCheck;
+import com.epam.xmltransforming.logic.validator.ProductFieldsCheck;
+import com.epam.xmltransforming.util.ResultCreator;
+import com.epam.xmltransforming.util.SourceCreator;
 
-public final class AddProductCommand implements ICommand {	
+/**
+ * Command for adding products to XML file.
+ * If the validation was succeded, it makes a copy of XML with new product added and redirect
+ * to the list of products in current subcategory.
+ * Else, it shows a page with input errors.
+ */
+
+public final class AddProductCommand implements ICommand {
+	
+	// Redirect pages
+	
+	private static final String SHOW_PRODUCTS_REDIRECT = "shop?command=show_products";
+	
+	// File pathes
+	
 	private static final String SOURCE_PATH = "/WEB-INF/classes/products.xml";
-	private static final String ADD_PRODUCT_SOURCE_PATH = "/xslt/add_product.xslt";
-	private static final String PRODUCTS_LIST_SOURCE_PATH = "/xslt/product_list.xslt";
+	private static final String ADD_PRODUCT_SOURCE_PATH = "/xslt/add_product.xsl";
+	
+	// Session attributes
 	
 	private static final String PREV_SUBCATEGORY_SESSION_ATTR = "prev_subcategory";
 	private static final String PREV_CATEGORY_SESSION_ATTR = "prev_category";
+	
+	// Transformer parameters
 	
 	private static final String TRYING_AGAIN_PARAM = "tryingAgain";
 	private static final String VALIDATOR_OBJECT_PARAM = "validatorObject";
@@ -44,12 +61,22 @@ public final class AddProductCommand implements ICommand {
 	private static final String PRICE_PARAM = "price";
 	private static final String NOT_IN_STOCK_PARAM = "notInStock";
 	
+	// Exception  messages
+
+	private static final String TRANSFORMER_CONFIGURATION_EXCEPTION_MESSAGE = "Error in transformer configuration";
+	private static final String TRANSFORM_EXCEPTION_MESSAGE = "Can't transform";
+	private static final String IO_EXCEPTION_MESSAGE = "Can't perform output";
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response)
 			throws CommandException {
 		ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 		ReadLock readLock = readWriteLock.readLock();
 		WriteLock writeLock = readWriteLock.writeLock();
+		HttpSession session = request.getSession();
+		
+		// Prevent an attempt to add duplicate products after reloading page
+		
 		try {			
 			// Set input	
 			Source source = SourceCreator.createFileSource(request, SOURCE_PATH);
@@ -67,7 +94,6 @@ public final class AddProductCommand implements ICommand {
 			
 			// Get required parameters from session and request
 			// and add the to transformer
-			HttpSession session = request.getSession();
 			String subcategory = (String)session.getAttribute(PREV_SUBCATEGORY_SESSION_ATTR);
 			String category = (String)session.getAttribute(PREV_CATEGORY_SESSION_ATTR);
 			transformer.setParameter(SUBCATEGORY_NAME_PARAM, subcategory);
@@ -127,37 +153,23 @@ public final class AddProductCommand implements ICommand {
 					OutputStream fileOutputStream = new FileOutputStream(xmlPath);
 					byte [] outputStreamContent = byteArrayOutputStream.toByteArray();
 					fileOutputStream.write(outputStreamContent);
-					fileOutputStream.close();	
+					fileOutputStream.close();
+					
+					// Show list of products
+					response.sendRedirect(SHOW_PRODUCTS_REDIRECT);
 				} finally {
 					writeLock.unlock();
 				}
-				
-				// Show list of products
-				Source xsltProductListSource = SourceCreator
-						.createFileSource(request, PRODUCTS_LIST_SOURCE_PATH);
-				
-				transformer = tFactory.newTransformer(xsltProductListSource);
-				transformer.setParameter(SUBCATEGORY_NAME_PARAM, subcategory);
-				transformer.setParameter(CATEGORY_NAME_PARAM, category);
-				StreamResult resultList = ResultCreator.createResponseOutputStreamResult(response);
-				readLock.lock();
-				try {
-					transformer.transform(source, resultList);	
-				} finally {
-					readLock.unlock();
-				}
 			} else {
-				OutputStream respoOutputStream = response.getOutputStream();
-				byteArrayOutputStream.writeTo(respoOutputStream);
+				OutputStream responseOutputStream = response.getOutputStream();
+				byteArrayOutputStream.writeTo(responseOutputStream);
 			}
 		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
+			throw new CommandException(TRANSFORMER_CONFIGURATION_EXCEPTION_MESSAGE, e);
 		} catch (TransformerException e) {
-			e.printStackTrace();
+			throw new CommandException(TRANSFORM_EXCEPTION_MESSAGE, e);
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+			throw new CommandException(IO_EXCEPTION_MESSAGE, e);
 		}
 	}
 }

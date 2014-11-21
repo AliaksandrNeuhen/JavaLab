@@ -14,11 +14,21 @@ import javax.xml.transform.stream.StreamSource;
 
 //import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.xalan.processor.TransformerFactoryImpl;
+
+/**
+ * Custom TransformerFactory class with caching abilities for file sources
+ * 
+ */
 public class CachingTransformerFactory 
 				extends TransformerFactoryImpl{
 	private static Map<String, TemplatesCacheEntry> templatesCache = 
 			new HashMap<String, TemplatesCacheEntry>();
 	
+	/**
+	 * Creates new Transformer or gets existing from cache for parameter source
+	 * @param source - source to get Transformer from
+	 * @return Transformer object
+	 */
 	@Override
 	public Transformer newTransformer(final Source source) 
 			throws TransformerConfigurationException {
@@ -44,6 +54,12 @@ public class CachingTransformerFactory
 		return super.newTransformer(source);
 	}
 	
+	/**
+	 * Creates new Transformer or gets existing from cache for parameter file
+	 * @param file - file to get Transformer from
+	 * @return TransformerObject
+	 * @throws TransformerConfigurationException
+	 */
 	protected Transformer newTransformer(final File file) 
 			throws TransformerConfigurationException{
 		String fileAbsolutePath = file.getAbsolutePath();
@@ -76,11 +92,21 @@ public class CachingTransformerFactory
 		return resultTransformer;
 	}
 	
+	/**
+	 * Gets Templates entry from cache
+	 * @param absolutePath
+	 * @return
+	 */
 	protected TemplatesCacheEntry read(String absolutePath) {
 		TemplatesCacheEntry templatesCacheEntry = templatesCache.get(absolutePath);
 		return templatesCacheEntry;
 	}
 	
+	/**
+	 * Saves Templates entry to cache
+	 * @param absolutePath
+	 * @param templatesCacheEntry
+	 */
 	protected void write (String absolutePath, TemplatesCacheEntry templatesCacheEntry) {
 		templatesCache.put(absolutePath, templatesCacheEntry);
 	}

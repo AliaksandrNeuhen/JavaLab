@@ -1,5 +1,10 @@
 package com.epam.xmltransforming.command;
 
+/**
+ * Command names.
+ * 
+ */
+
 public enum CommandName {
 	NO_SUCH_COMMAND, 
 	SHOW_CATEGORIES,

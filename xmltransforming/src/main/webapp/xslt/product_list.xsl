@@ -18,6 +18,7 @@
     			Products list
     			<form action="shop" metho="GET" style="display:inline-block;float:right;">
     				<input type="hidden" name="command" value="add_product"/>
+    				<input type="hidden" name="isAdded" value="false" />
     				<input type="submit" value="Add product"/>
     			</form>
     			</caption>
