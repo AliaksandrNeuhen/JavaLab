@@ -1,7 +1,6 @@
 package com.epam.xmltransforming.command;
 
 import java.io.IOException;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +14,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
 import com.epam.xmltransforming.exception.CommandException;
+import com.epam.xmltransforming.util.ProductsReadWriteLock;
 import com.epam.xmltransforming.util.ResultCreator;
 import com.epam.xmltransforming.util.SourceCreator;
 
@@ -57,7 +57,7 @@ public final class ShowSubcategoriesCommand implements ICommand {
 				session.setAttribute(PREV_CATEGORY_NAME_SESSION_ATTR, categoryName);
 			}
 			transformer.setParameter(CATEGORY_NAME_REQUEST_PARAM, categoryName);	
-			ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+			ProductsReadWriteLock readWriteLock = ProductsReadWriteLock.getInstance();
 			ReadLock readLock = readWriteLock.readLock();
 			readLock.lock();
 			try {

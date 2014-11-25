@@ -20,6 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import com.epam.xmltransforming.exception.CommandException;
 import com.epam.xmltransforming.logic.validator.ProductFieldsCheck;
+import com.epam.xmltransforming.util.ProductsReadWriteLock;
 import com.epam.xmltransforming.util.ResultCreator;
 import com.epam.xmltransforming.util.SourceCreator;
 
@@ -70,7 +71,7 @@ public final class AddProductCommand implements ICommand {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response)
 			throws CommandException {
-		ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+		ProductsReadWriteLock readWriteLock = ProductsReadWriteLock.getInstance();
 		ReadLock readLock = readWriteLock.readLock();
 		WriteLock writeLock = readWriteLock.writeLock();
 		HttpSession session = request.getSession();

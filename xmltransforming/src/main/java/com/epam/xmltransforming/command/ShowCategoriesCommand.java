@@ -1,7 +1,6 @@
 package com.epam.xmltransforming.command;
 
 import java.io.IOException;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +13,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
 import com.epam.xmltransforming.exception.CommandException;
+import com.epam.xmltransforming.util.ProductsReadWriteLock;
 import com.epam.xmltransforming.util.ResultCreator;
 import com.epam.xmltransforming.util.SourceCreator;
 
@@ -47,7 +47,7 @@ public final class ShowCategoriesCommand implements ICommand {
 			Transformer transformer = tFactory.newTransformer(xsltSource);
 			
 			// Execute transformation
-			ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+			ProductsReadWriteLock readWriteLock = ProductsReadWriteLock.getInstance();
 			ReadLock readLock = readWriteLock.readLock();
 			readLock.lock();
 			try {
