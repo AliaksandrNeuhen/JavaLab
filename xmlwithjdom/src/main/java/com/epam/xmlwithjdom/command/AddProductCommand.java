@@ -1,4 +1,4 @@
-package com.epam.xmltransforming.command;
+package com.epam.xmlwithjdom.command;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -17,11 +17,11 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
-import com.epam.xmltransforming.exception.CommandException;
-import com.epam.xmltransforming.logic.validator.ProductFieldsCheck;
-import com.epam.xmltransforming.util.ProductsReadWriteLock;
-import com.epam.xmltransforming.util.ResultCreator;
-import com.epam.xmltransforming.util.SourceCreator;
+import com.epam.xmlwithjdom.exception.CommandException;
+import com.epam.xmlwithjdom.logic.validator.ProductFieldsCheck;
+import com.epam.xmlwithjdom.util.ProductsReadWriteLock;
+import com.epam.xmlwithjdom.util.ResultCreator;
+import com.epam.xmlwithjdom.util.SourceCreator;
 
 /**
  * Command for adding products to XML file.
@@ -34,7 +34,7 @@ public final class AddProductCommand implements ICommand {
 	
 	// Redirect pages
 	
-	private static final String SHOW_PRODUCTS_REDIRECT = "shop?command=show_products";
+	private static final String SHOW_PRODUCTS_REDIRECT = "shop.do?command=showProducts";
 	
 	// File pathes
 	
@@ -165,10 +165,13 @@ public final class AddProductCommand implements ICommand {
 				byteArrayOutputStream.writeTo(responseOutputStream);
 			}
 		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
 			throw new CommandException(TRANSFORMER_CONFIGURATION_EXCEPTION_MESSAGE, e);
 		} catch (TransformerException e) {
+			e.printStackTrace();
 			throw new CommandException(TRANSFORM_EXCEPTION_MESSAGE, e);
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new CommandException(IO_EXCEPTION_MESSAGE, e);
 		}
 	}
