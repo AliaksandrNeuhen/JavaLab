@@ -13,7 +13,7 @@ import javax.xml.transform.stream.StreamSource;
  * 
  */
 
-public class SourceCreator {
+public final class SourceCreator {
 
 	/**
 	 * Creates Source object from file

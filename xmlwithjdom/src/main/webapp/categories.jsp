@@ -3,6 +3,7 @@
  
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://struts.apache.org/tags-nested" prefix="nested" %>
  
  <html>
  	<head>
@@ -15,19 +16,28 @@
  				<th>Category Name</th>
  				<th>Number Of Products</th>
  			</tr>
- 			<logic:iterate id="category" name="ProductsForm" property="productsDocument.rootElement.children"
+ 			<nested:root name="ProductsForm">
+ 			<nested:nest property="productsDocument.rootElement">
+ 			<nested:iterate id="category" property="children"
  					indexId="index">
  				<tr>
  					<td>
- 						<a href="shop.do?command=showSubcategories&categoryname=${category.attributes[0].value}"><bean:write name="category" property="attributes[0].value"/></a>
+ 						<a href="shop.do?command=showSubcategories&categoryname=${category.attributes[0].value}">
+ 						<bean:write name="category" property="attributes[0].value"/>
+ 						</a>
  					</td>
  					<td>
- 						<logic:iterate id="count" name="ProductsForm" property="countOfProducts" offset="index" length="1">
-	 						<bean:write name="count" />
- 						</logic:iterate>
+ 						<bean:define id="size" value="0"></bean:define>
+ 						<nested:iterate id="subcategory" property="children">
+ 							<nested:size id="subcategorySize" property="children" />
+  							<bean:define id="size" value="${size + subcategorySize}"/>
+ 						</nested:iterate>
+ 						<bean:write name="size"/>
  					</td>
  				</tr>
- 			</logic:iterate>
+ 			</nested:iterate>
+ 			</nested:nest>
+ 			</nested:root>
  		</table>
  	</body>
  </html>

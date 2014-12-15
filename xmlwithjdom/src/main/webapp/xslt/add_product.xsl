@@ -52,6 +52,7 @@
 				</div>
 				<div class="formRow">
 					<label>Model</label> <input type="text" name="model" value="{$model}"/>
+					<span>Format: 2 big letters and 3 digits</span>
 					<xsl:if test="$tryingAgain = 'true'">
 						<span class="alertMessage">
 							<xsl:value-of select="validator:getErrorsForModel($validatorObject)"/>
@@ -60,6 +61,7 @@
 				</div>
 				<div class="formRow">
 					<label>Date of issue</label> <input type="text" name="dateOfIssue" value="{$dateOfIssue}"/>
+					<span>Format: dd-MM-yyyy</span>
 					<xsl:if test="$tryingAgain = 'true'">
 						<span class="alertMessage">
 							<xsl:value-of select="validator:getErrorsForDateOfIssue($validatorObject)"/>
@@ -89,7 +91,7 @@
 					<input class="formButton" type="submit" value="Save"/>
 				</div>
 			</form>
-			<form action="shop.do?command=showProducts" method="POST">
+			<form action="shop.do?command=showProducts" method="POST"  style="margin-top:-31px;margin-left:100px;">
 				<input type="hidden" name="command" value="back"/>
 				<input type="hidden" name="page" value="products"/>
 				<input  class="formButton" type="submit" value="Cancel"/>

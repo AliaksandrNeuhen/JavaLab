@@ -49,7 +49,7 @@ public final class ProductFieldsCheck {
 			+ "(can be positive value or Not In Stock)";
 	
 	private static final String MODEL_PATTERN = "[A-Z]{2}[0-9]{3}";
-	private static final String DATE_COMMON_PATTERN = "[0-3][0-9]-[01][0-9]-[0-9]{4}";
+	private static final String DATE_COMMON_PATTERN = "(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.]((19|20)\\d\\d)";
 	private static final String DATE_PATTERN = "dd-MM-yyyy";
 	private static final String PRICE_PATTERN = "[0-9]+";
 	

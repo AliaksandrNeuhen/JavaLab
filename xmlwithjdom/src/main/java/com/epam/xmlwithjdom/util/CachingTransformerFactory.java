@@ -19,7 +19,7 @@ import org.apache.xalan.processor.TransformerFactoryImpl;
  * Custom TransformerFactory class with caching abilities for file sources
  * 
  */
-public class CachingTransformerFactory 
+public final class CachingTransformerFactory 
 				extends TransformerFactoryImpl{
 	private static Map<String, TemplatesCacheEntry> templatesCache = 
 			new HashMap<String, TemplatesCacheEntry>();

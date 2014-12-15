@@ -4,9 +4,9 @@
 }
 
 .formButton {
-	width: 100px;
+	width: 89px;
 	position: relative;
-	left: 137px;
+	left: 107px;
 	margin-top: 10px;
 }
 
@@ -23,4 +23,29 @@ label {
 
 form {
 	margin-bottom: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+.addButton {
+}
+
+.backButton {
+	margin-top:10px;
+}
+
+.invalid {
+	border: 2px solid red;
+}
+
+.popupMessage {
+	display: none;
+	z-index: 1;
+	background-color: yellow;
+	position: absolute; 
+	margin-left: 100px;
+	width: 200px;
+	word-wrap: break-word;
 }

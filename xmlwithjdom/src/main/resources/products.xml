@@ -8,14 +8,14 @@
 		<product name="Long loaf">
 			<provider>Minsk Plant Bakery</provider>
 			<model>BS100</model>
-			<date-of-issue>10-17-2014</date-of-issue>
+			<date-of-issue>17-10-2014</date-of-issue>
 			<color>White</color>
 			<price>8000</price>
 		</product>
 		<product name="Black bread">
 			<provider>Minsk Plant Bakery</provider>
 			<model>BS200</model>
-			<date-of-issue>10-17-2014</date-of-issue>
+			<date-of-issue>17-10-2014</date-of-issue>
 			<color>Black</color>
 			<price>7000</price>
 		</product>
@@ -24,7 +24,7 @@
 		<product name="Beef">
 			<provider>Minsk Meat Processing Plant</provider>
 			<model>MM100</model>
-			<date-of-issue>10-17-2014</date-of-issue>
+			<date-of-issue>17-10-2014</date-of-issue>
 			<color>Red</color>
 			<price>80000</price>
 		</product>
@@ -33,7 +33,7 @@
 		<product name="Semolina">
 			<provider>Minsk Plant Bakery</provider>
 			<model>GG100</model>
-			<date-of-issue>10-17-2014</date-of-issue>
+			<date-of-issue>17-10-2014</date-of-issue>
 			<color>White</color>
 			<price>20000</price>
 		</product>
@@ -44,7 +44,7 @@
 		<product name="Beer Alivaria">
 			<provider>Alivaria plant</provider>
 			<model>DB001</model>
-			<date-of-issue>10-17-2014</date-of-issue>
+			<date-of-issue>17-10-2014</date-of-issue>
 			<color>Brown</color>
 			<price>20000</price>
 		</product>
@@ -53,7 +53,7 @@
 		<product name="Coca-Cola">
 			<provider>Coca-Cola inc.</provider>
 			<model>DN100</model>
-			<date-of-issue>10-27-2014</date-of-issue>
+			<date-of-issue>27-10-2014</date-of-issue>
 			<color>Black</color>
 			<price>14000</price>
 		</product>
@@ -64,14 +64,14 @@
 		<product name="Toothbrush">
 			<provider>Colgate</provider>
 			<model>HT100</model>
-			<date-of-issue>10-27-2014</date-of-issue>
+			<date-of-issue>27-10-2014</date-of-issue>
 			<color>White</color>
 			<price>30000</price>
 		</product>
 		<product name="Soap">
 			<provider>Dove</provider>
 			<model>HS100</model>
-			<date-of-issue>10-27-2014</date-of-issue>
+			<date-of-issue>27-10-2014</date-of-issue>
 			<color>White</color>
 			<price>20000</price>
 		</product>

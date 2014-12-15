@@ -10,11 +10,7 @@
 		<body>
 			<table border="1" align="center">
     			<caption>
-    				<form action="shop" method="GET" style="display:inline-block;float:left;">
-    					<input type="hidden" name="command" value="back"/>
-    					<input type="hidden" name="page" value="categories"/>
-    					<input type="submit" value="Back"/>
-    				</form>Subcategories list
+    				Subcategories list
 				</caption>
     			<tr>
     				<th>Subcategory name</th>
@@ -22,6 +18,11 @@
     			</tr>
 				<xsl:apply-templates />
 			</table>
+			<form action="shop" method="GET" align="center" style="margin-right:197px; margin-top: 10px;">
+    					<input type="hidden" name="command" value="back"/>
+    					<input type="hidden" name="page" value="categories"/>
+    					<input type="submit" value="Back" style="width:89px;"/>
+    		</form>
 		</body>
 	</html>
 </xsl:template>

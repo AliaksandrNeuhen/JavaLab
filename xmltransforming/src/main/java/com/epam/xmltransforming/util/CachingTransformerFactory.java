@@ -5,12 +5,19 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.stream.StreamSource;
+
+
+
+
 
 //import net.sf.saxon.TransformerFactoryImpl;
 import org.apache.xalan.processor.TransformerFactoryImpl;
@@ -23,7 +30,7 @@ public class CachingTransformerFactory
 				extends TransformerFactoryImpl{
 	private static Map<String, TemplatesCacheEntry> templatesCache = 
 			new HashMap<String, TemplatesCacheEntry>();
-	
+	private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 	/**
 	 * Creates new Transformer or gets existing from cache for parameter source
 	 * @param source - source to get Transformer from
@@ -64,7 +71,15 @@ public class CachingTransformerFactory
 			throws TransformerConfigurationException{
 		String fileAbsolutePath = file.getAbsolutePath();
 		// Search the cache for the templates entry
-		TemplatesCacheEntry templatesCacheEntry = read(file.getAbsolutePath());
+		TemplatesCacheEntry templatesCacheEntry;
+		ReadLock readLock = readWriteLock.readLock();
+		readLock.lock();
+		try {
+			templatesCacheEntry = read(file.getAbsolutePath());
+		} finally {
+			readLock.unlock();
+		}
+		
 		// Check the timestamp of modification
 		if ((templatesCacheEntry != null) && (templatesCacheEntry.lastModified < 
 				templatesCacheEntry.templatesFile.lastModified())) {
@@ -84,7 +99,13 @@ public class CachingTransformerFactory
 			templatesCacheEntry = new TemplatesCacheEntry(templates, file);
 			
 			// Save this entry to the cache
-			write(fileAbsolutePath, templatesCacheEntry);
+			WriteLock writeLock = readWriteLock.writeLock();
+			writeLock.lock();
+			try {
+				write(fileAbsolutePath, templatesCacheEntry);
+			} finally {
+				writeLock.unlock();
+			}
 		} else {
 //			System.out.println("Using cached transformation [" + fileAbsolutePath + "].");
 		}

@@ -89,7 +89,7 @@
 					<input class="formButton" type="submit" value="Save"/>
 				</div>
 			</form>
-			<form action="shop" method="POST">
+			<form action="shop" method="POST" style="margin-top:-31px;margin-left:100px;">
 				<input type="hidden" name="command" value="back"/>
 				<input type="hidden" name="page" value="products"/>
 				<input  class="formButton" type="submit" value="Cancel"/>

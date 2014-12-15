@@ -1,6 +1,7 @@
 package com.epam.xmltransforming.command;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,6 +17,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import com.epam.xmltransforming.exception.CommandException;
 import com.epam.xmltransforming.logic.validator.ProductFieldsCheck;
@@ -79,7 +81,7 @@ public final class AddProductCommand implements ICommand {
 		
 		try {			
 			// Set input	
-			Source source = SourceCreator.createFileSource(request, SOURCE_PATH);
+			
 			// Create transformer
 			Source xsltSource = SourceCreator.createFileSource(request, ADD_PRODUCT_SOURCE_PATH);
 			TransformerFactory tFactory = TransformerFactory.newInstance();
@@ -127,9 +129,16 @@ public final class AddProductCommand implements ICommand {
 			ProductFieldsCheck validator = new ProductFieldsCheck();
 			transformer.setParameter(VALIDATOR_OBJECT_PARAM, validator);
 
+			long lastModified;
+			File sourceFile;
+			Source source;
 			readLock.lock();
 			try {
-				transformer.transform(source, result);	
+				String sourcePath = SourceCreator.getRealPath(request, SOURCE_PATH);
+				sourceFile = new File(sourcePath);
+				source = new StreamSource(sourceFile);
+				transformer.transform(source, result);
+				lastModified = sourceFile.lastModified();
 			} finally {
 				readLock.unlock();
 			}
@@ -146,8 +155,12 @@ public final class AddProductCommand implements ICommand {
 				//Copy new product to xml
 				writeLock.lock();
 				try {
-					byteArrayOutputStream.reset();
-					transformer.transform(source, result);
+					if (lastModified != sourceFile.lastModified()) {
+						source = new StreamSource(sourceFile);
+						byteArrayOutputStream.reset();
+						transformer.transform(source, result);
+					}
+
 					
 					String xmlPath = SourceCreator.getRealPath(request, SOURCE_PATH);
 					OutputStream fileOutputStream = new FileOutputStream(xmlPath);

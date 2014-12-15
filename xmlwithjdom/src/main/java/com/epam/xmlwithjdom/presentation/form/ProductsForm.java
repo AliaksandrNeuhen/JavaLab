@@ -1,8 +1,5 @@
 package com.epam.xmlwithjdom.presentation.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.struts.action.ActionForm;
 import org.jdom2.Document;
 
@@ -10,15 +7,14 @@ public final class ProductsForm extends ActionForm {
 	private static final long serialVersionUID = 0L;
 	
 	private Document productsDocument;
-	private List<String> countOFProducts; 
 	private String currCategoryName;
 	private String currSubcategoryName;
 	private int currCategoryIndex;
 	private int currSubcategoryIndex;
+	private String models;
 	
 	public ProductsForm() {
 		productsDocument = new Document();
-		countOFProducts = new ArrayList<String>();
 		currCategoryName = "";
 		currSubcategoryName = "";
 	}
@@ -31,13 +27,6 @@ public final class ProductsForm extends ActionForm {
 	}
 	public void setProductsDocument(Document productsDocument) {
 		this.productsDocument = productsDocument;
-	}
-	
-	public List<String> getCountOfProducts() {
-		return countOFProducts;
-	}
-	public void setCountOfProducts(List<String> countOfProducts) {
-		this.countOFProducts = countOfProducts;
 	}
 	
 	public String getCurrCategoryName() {
@@ -66,5 +55,21 @@ public final class ProductsForm extends ActionForm {
 	}
 	public void setCurrSubcategoryIndex(int index) {
 		currSubcategoryIndex = index;
+	}
+	
+	public String getModels() {
+		return models;
+	}
+	public void setModels(String models) {
+		this.models = models;
+	}
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " [productsDocument=" + productsDocument
+				+ ", currCategoryName="
+				+ currCategoryName + ", currSubcategoryName="
+				+ currSubcategoryName + ", currCategoryIndex="
+				+ currCategoryIndex + ", currSubcategoryIndex="
+				+ currSubcategoryIndex + ", models=" + models + "]";
 	}
 }

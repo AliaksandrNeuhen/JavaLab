@@ -16,10 +16,6 @@ public final class CommandHelper {
 	
 	private CommandHelper(){
 		commands.put(CommandName.NO_SUCH_COMMAND, new ErrorCommand());
-		commands.put(CommandName.SHOW_CATEGORIES, new ShowCategoriesCommand());
-		commands.put(CommandName.SHOW_SUBCATEGORIES, new ShowSubcategoriesCommand());
-		commands.put(CommandName.SHOW_PRODUCTS, new ShowProductsCommand());
-		commands.put(CommandName.BACK, new BackCommand());
 		commands.put(CommandName.ADD_PRODUCT, new AddProductCommand());
 	}
 	

@@ -42,7 +42,6 @@ public final class XSLTServlet extends HttpServlet {
 					throws IOException, ServletException{
 		String commandName = request.getParameter(COMMAND_NAME);
 		ICommand command = CommandHelper.getInstance().getCommand(commandName);
-
 		try {
 			command.execute(request, response);
 		} catch (CommandException e) {

@@ -25,12 +25,17 @@
 						</a>
 					</td>
 					<td>
-						<logic:iterate id="count" name="ProductsForm" property="countOfProducts" offset="index" length="1">
-	 						<bean:write name="count" />
- 						</logic:iterate>
+						<bean:size id="subcategorySize" name="subcategory" property="children"/>
+						<bean:define id="size" value="${subcategorySize}"/>
+						<bean:write name="size"/>
 					</td>
 				</tr>
 			</logic:iterate>
 		</table>
+		<form action="shop.do" method="POST">
+			<input type="hidden" name="command" value="back"/>
+			<input type="hidden" name="page" value="categories"/>
+			<input type="submit" value="Back" class="backButton"/> 
+		</form>
 	</body>
 </html>

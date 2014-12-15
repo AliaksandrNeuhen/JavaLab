@@ -10,17 +10,9 @@
 		<body>
 			<table border="1" align="center">
     			<caption>
-    			<form action="shop" method="GET" style="display:inline-block;float:left;">
-    				<input type="hidden" name="command" value="back"/>
-    				<input type="hidden" name="page" value="subcategories"/>
-    				<input type="submit" value="Back"/>
-    			</form>
+    			
     			Products list
-    			<form action="shop" metho="GET" style="display:inline-block;float:right;">
-    				<input type="hidden" name="command" value="add_product"/>
-    				<input type="hidden" name="isAdded" value="false" />
-    				<input type="submit" value="Add product"/>
-    			</form>
+    			
     			</caption>
     			<tr>
     				<th>Product name</th>
@@ -32,6 +24,16 @@
     			</tr>
 				<xsl:apply-templates />
 			</table>
+			<form action="shop" method="GET" align="center" style="display:inline-block;float:left;margin-left:388px;margin-top:10px;">
+    				<input type="hidden" name="command" value="back"/>
+    				<input type="hidden" name="page" value="subcategories"/>
+    				<input type="submit" value="Back" style="width:89px;"/>
+    		</form>
+    		<form action="shop" metho="GET" align="center" style="display:inline-block;float:right;margin-right:389px;margin-top:10px;">
+    				<input type="hidden" name="command" value="add_product"/>
+    				<input type="hidden" name="isAdded" value="false" />
+    				<input type="submit" value="Add product"/>
+    		</form>
 		</body>
 	</html>
 </xsl:template>

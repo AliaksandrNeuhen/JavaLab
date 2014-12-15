@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
  * product source.
  * 
  */
-public class ProductsReadWriteLock {
+public final class ProductsReadWriteLock {
 	private ReentrantReadWriteLock readWriteLock = null;
 	private static ProductsReadWriteLock instance = null;
 	

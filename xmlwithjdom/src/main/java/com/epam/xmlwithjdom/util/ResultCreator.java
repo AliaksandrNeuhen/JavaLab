@@ -11,7 +11,8 @@ import javax.xml.transform.stream.StreamResult;
  * Class for creating StreamResult objects
  * 
  */
-public class ResultCreator {
+public final class ResultCreator {
+	private ResultCreator() {}
 	
 	/**
 	 * Creates StreamResult object using response output stream for output
