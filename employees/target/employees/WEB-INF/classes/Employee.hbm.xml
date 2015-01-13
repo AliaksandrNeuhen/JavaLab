@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+	<class name="com.epam.employees.entity.Employee" table="EMPLOYEE">
+		<id name="id" type="long">
+			<column name="ID_EMPLOYEE" />
+			<generator class="native"/>
+		</id>
+		
+		<property name="firstName" column="FIRST_NAME" type="string" />
+		<property name="lastName" column="LAST_NAME" type="string" />
+ 		<many-to-one name="adress" column="FK_ID_ADRESS" fetch="join"
+				class="com.epam.employees.entity.Adress" not-null="true" />
+
+		<set name="positions" cascade="all" batch-size="100">
+			<key column="FK_ID_EMPLOYEE" />
+			<one-to-many class="com.epam.employees.entity.Position"/>
+		</set>
+	</class>
+</hibernate-mapping>

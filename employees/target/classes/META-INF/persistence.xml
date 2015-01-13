@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+                                 http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+	<persistence-unit name="emp">
+	 	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>com.epam.employees.entity.Country</class>
+		<class>com.epam.employees.entity.City</class>
+		<class>com.epam.employees.entity.Adress</class>
+		<class>com.epam.employees.entity.Employee</class>
+		<class>com.epam.employees.entity.Company</class>
+		<class>com.epam.employees.entity.Position</class>
+		<class>com.epam.employees.entity.Office</class>
+		
+		<properties>
+			<property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver"/>
+			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@//localhost:1521/xe"/>
+			<property name="hibernate.connection.username" value="company"/>
+			<property name="hibernate.connection.password" value="root"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+			<property name="hibernate.hbm2ddl" value="update"/>
+			<property name="hibernate.show_sql" value="true"/>
+<!-- 			<property name="hibernate.max_fetch_depth" value="10"/> -->
+		</properties>
+	</persistence-unit>
+</persistence>
