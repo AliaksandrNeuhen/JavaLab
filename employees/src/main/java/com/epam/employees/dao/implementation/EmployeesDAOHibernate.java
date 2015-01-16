@@ -18,6 +18,10 @@ import com.epam.employees.entity.Office;
 import com.epam.employees.entity.Position;
 import com.epam.employees.util.HibernateUtil;
 
+/**
+ * Data Access object for interaction with employees database
+ *
+ */
 public final class EmployeesDAOHibernate implements EmployeesDAO {
 	
 	public List<Position> getPositions() {
@@ -42,6 +46,11 @@ public final class EmployeesDAOHibernate implements EmployeesDAO {
 		return getData(Company.class);
 	}
 	
+	/**
+	 * Get amount of employees from database starting with some index
+	 * @param firstResult - index of the first employee to fetch
+	 * @param countOfResults - amount of employees to fetch
+	 */
 	public List<Employee> getEmployees(Integer firstResult, Integer countOfResults) {
 		return getData(Employee.class, firstResult, countOfResults);
 	}
@@ -68,6 +77,11 @@ public final class EmployeesDAOHibernate implements EmployeesDAO {
 		saveData(positions);
 	};
 	
+	/**
+	 * Generic method for fetching all data of chosen class from database
+	 * @param persistentClass - class of objects to fetch
+	 * @return list of objects of chosen class fetched from database
+	 */
 	@SuppressWarnings("unchecked")
 	private <T> List<T> getData(Class<T> persistentClass) {
 		List<T> data = null;
@@ -84,6 +98,13 @@ public final class EmployeesDAOHibernate implements EmployeesDAO {
 		return data;
 	}
 	
+	/**
+	 * Get amount of objects from database starting with some index.
+	 * @param persistentClass - class of objects to fetch
+	 * @param firstResult - index of the first object to fetch
+	 * @param countOfResults - amount of objects to fetch
+	 * @return list of fetched objects
+	 */
 	@SuppressWarnings("unchecked")
 	private <T> List<T> getData(Class<T> persistentClass, int firstResult,
 			int countOfResults) {
@@ -103,6 +124,10 @@ public final class EmployeesDAOHibernate implements EmployeesDAO {
 		return data;
 	}
 	
+	/**
+	 * Persist collection of objects in database
+	 * @param data - collection of objects
+	 */
 	private <T> void saveData(Collection<T> data) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();

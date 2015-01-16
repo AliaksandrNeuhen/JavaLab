@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -21,48 +23,61 @@ import com.epam.employees.entity.Office;
 import com.epam.employees.entity.Position;
 import com.epam.employees.exception.CommandException;
 
-public class EmployeesDAOJdbc implements EmployeesDAO {
+public final class EmployeesDAOJdbc implements EmployeesDAO {
 
-	private static final String GET_EMPLOYEES_SQL = 
-			"          select pos.ID_POSITION as POS_ID,"
+	// Get list of employees
+
+	private static final String GET_EMPL_SQL =
+			"		select *"
+			+ "		from ("
+			+ "			select row_.*, rownum rownum_"
+			+ "			from ("
+			+ " 	 select emp2.ID_EMPLOYEE as EMPLOYEE_ID,"
+			+ "		emp2.FIRST_NAME as FIRST_NAME, "
+			+ "		emp2.LAST_NAME as LAST_NAME, "
+			+ "		adr2.CONTENT as EMPLOYEE_ADRESS, "
+			+ "		ct2.NAME as EMPLOYEE_ADRESS_CITY, "
+			+ "		ctr2.NAME as EMPLOYEE_ADRESS_COUNTRY"
+			+ "				from EMPLOYEE emp2"
+			+ "				inner join ADRESS adr2 on emp2.FK_ID_ADRESS = adr2.ID_ADRESS"
+			+ "				inner join CITY ct2 on adr2.FK_ID_CITY = ct2.ID_CITY"
+			+ "				inner join COUNTRY ctr2 on ct2.FK_ID_COUNTRY = ctr2.ID_COUNTRY"
+			+ "			) row_)"
+			+ "		where rownum_ <= ? and rownum_ > ?"
+			+ "		order by EMPLOYEE_ID";
+
+	// Get positions for employees
+
+	private static final String GET_POS_SQL = "select pos.ID_POSITION as POS_ID,"
 			+ "        pos.NAME as POS_NAME,"
 			+ "        emp.FIRST_NAME as FIRST_NAME,"
 			+ "        emp.LAST_NAME as LAST_NAME,"
 			+ "        pos.FK_ID_OFFICE as OFFICE_ID,"
 			+ "        pos.FK_ID_EMPLOYEE as EMPLOYEE_ID,"
-			+ "        adr.CONTENT as ADRESS,"
+			+ "        adr1.CONTENT as ADRESS,"
 			+ "        ct.NAME as CITY,"
 			+ "        ctr.NAME as COUNTRY,"
 			+ "        offc.ID_OFFICE as OFFICE_ID2,"
-			+ "		   (select count(*) "
-			+ "			from POSITION p"
-			+ "			where p.FK_ID_OFFICE = offc.ID_OFFICE) as COUNT_OF_EMP,"
-			+ "		   cmp.NAME as COMPANY_NAME,"
-			+ "		   adr2.CONTENT as EMPLOYEE_ADRESS,"
-			+ "		   ct2.NAME as EMPLOYEE_ADRESS_CITY,"
-			+ "		   ctr2.NAME as EMPLOYEE_ADRESS_COUNTRY,"
+			+ "        (select count(*) "
+			+ "          from position p "
+			+ "          where p.FK_ID_OFFICE = offc.ID_OFFICE) as COUNT_OF_EMP,"
+			+ "        cmp.name as COMPANY_NAME,"
+			+ "        adr2.CONTENT as EMPLOYEE_ADRESS,"
+			+ "        ct2.NAME as EMPLOYEE_ADRESS_CITY,"
+			+ "        ctr.NAME as EMPLOYEE_ADRESS_COUNTRY,"
 			+ "        offc.DESCRIPTION as OFFICE_DESCRIPTION"
-			+ " from POSITION pos"
-			+ " join OFFICE offc on offc.ID_OFFICE = pos.FK_ID_OFFICE"
-			+ " join ADRESS adr on offc.FK_ID_ADRESS = adr.ID_ADRESS"
-			+ " join CITY ct on adr.FK_ID_CITY = ct.ID_CITY"
+			+ "        from POSITION pos"
+			+ "        join OFFICE offc on offc.ID_OFFICE = pos.FK_ID_OFFICE"
+			+ "        join ADRESS adr1 on offc.FK_ID_ADRESS = adr1.ID_ADRESS"
+			+ "        join CITY ct on adr1.FK_ID_CITY = ct.ID_CITY"
 			+ " join COUNTRY ctr on ct.FK_ID_COUNTRY = ctr.ID_COUNTRY"
-			+ "	join COMPANY cmp on offc.FK_ID_COMPANY = cmp.ID_COMPANY"
+			+ " join COMPANY cmp on offc.FK_ID_COMPANY = cmp.ID_COMPANY"
 			+ " join EMPLOYEE emp on pos.FK_ID_EMPLOYEE = emp.ID_EMPLOYEE"
-			+ "	join ADRESS adr2 on emp.FK_ID_ADRESS = adr2.ID_ADRESS"
-			+ "	join CITY ct2 on adr2.FK_ID_CITY = ct2.ID_CITY"
+			+ " join ADRESS adr2 on emp.FK_ID_ADRESS = adr2.ID_ADRESS"
+			+ " join CITY ct2 on adr2.FK_ID_CITY = ct2.ID_CITY"
 			+ " join COUNTRY ctr2 on ct2.FK_ID_COUNTRY = ctr2.ID_COUNTRY"
-			+ " join ("
-			+ "		select *"
-			+ "		from ("
-			+ "			select row_.*, rownum rownum_"
-			+ "			from ("
-			+ "				select *"
-			+ "				from EMPLOYEE emp2"
-			+ "				inner join ADRESS adr2 on emp2.FK_ID_ADRESS = adr2.ID_ADRESS"
-			+ "			) row_)"
-			+ "		where rownum_ <= ? and rownum_ > ?"
-			+ " ) ids on pos.FK_ID_EMPLOYEE = ids.ID_EMPLOYEE"
+			+ " where pos.FK_ID_EMPLOYEE in"
+			+ "  (?)"
 			+ " order by emp.ID_EMPLOYEE";
 	
 	// Column names
@@ -82,92 +97,62 @@ public class EmployeesDAOJdbc implements EmployeesDAO {
 	private static final String EMPLOYEE_ADRESS_COUNTRY_COLUMN = "EMPLOYEE_ADRESS_COUNTRY";			
 	
 	public EmployeesDAOJdbc() {}
-	
-	public List<Employee> getEmployees() {
-		List<Employee> employees = new ArrayList<Employee>(); 
-		return employees;
-	}
 
-	public List<Position> getPositions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Office> getOffices() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Country> getCountries() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<City> getCities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Adress> getAdresses() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Company> getCompanies() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Employee> getEmployees(Integer firstResult,
-			Integer countOfResults) {
+	public List<Employee> getEmployees(Integer firstResult, Integer countOfResults) {
 		List<Employee> employees = new ArrayList<Employee>();
 		ConnectionPool connectionPool = null;
 		Connection connection = null;
-		ResultSet result = null;
+		ResultSet employeesResult = null;
+		ResultSet positionsResult = null;
 		try {
 			connectionPool = ConnectionPool.getInstance();
 			connection = connectionPool.getConnection();
-			PreparedStatement statement = connection.prepareStatement(GET_EMPLOYEES_SQL);
-			statement.setInt(1, firstResult + countOfResults);
-			statement.setInt(2, firstResult);
-			result = statement.executeQuery();
+			PreparedStatement getEmployeesStatement =
+					connection.prepareStatement(GET_EMPL_SQL);
+			getEmployeesStatement.setInt(1, firstResult + countOfResults);
+			getEmployeesStatement.setInt(2, firstResult);
 			
-			while (result.next()) {
-				// Build employee
-				Employee currEmployee;
-				int employeesCount = employees.size();
-				if (employeesCount > 0) {
-					currEmployee = employees.get(employees.size() - 1);	
-					Long employeeId = result.getLong(EMPLOYEE_ID_COLUMN);
-					if (employeeId == currEmployee.getId()) {
-						Position currPosition = buildPosition(result, currEmployee);
-						Set<Position> currPositions = currEmployee.getPositions();
-						currPositions.add(currPosition);
-					} else {
-						currEmployee = buildEmployee(result);
-						Set<Position> currPositions = new HashSet<Position>();
-						Position currPosition = buildPosition(result, currEmployee);
-						currPositions.add(currPosition);
-						currEmployee.setPositions(currPositions);
-						employees.add(currEmployee);
-					}
-				} else {
-					currEmployee = buildEmployee(result);
-					Set<Position> positions = new HashSet<Position>();
-					Position currPosition = buildPosition(result, currEmployee);
-					positions.add(currPosition);
-					currEmployee.setPositions(positions);
-					employees.add(currEmployee);
-				}
+			employeesResult = getEmployeesStatement.executeQuery();
 
+			StringBuilder idString = new StringBuilder();
+			while (employeesResult.next()) {
+				String currId = String.valueOf(employeesResult.getLong(EMPLOYEE_ID_COLUMN));
+				idString.append(currId).append(", ");
+				Employee currEmp = buildEmployee(employeesResult);
+				employees.add(currEmp);
 			}
-		} catch (CommandException e) {
-			e.printStackTrace();
+			idString = idString.deleteCharAt(idString.length() - 1);
+			idString = idString.deleteCharAt(idString.length() - 1);
+			String getPositionsSQL = GET_POS_SQL.replace("?", idString);
+			Statement getPositionsStatement = connection.createStatement();
+			employeesResult.close();
+
+			positionsResult = getPositionsStatement.executeQuery(getPositionsSQL);
+
+			Iterator<Employee> iter = employees.iterator();
+			while (positionsResult.next()) {
+				Long employeeId = positionsResult.getLong(EMPLOYEE_ID_COLUMN);
+				Employee currEmployee = iter.next();
+				Set<Position> positions = new HashSet<Position>();
+				while (employeeId == currEmployee.getId()) {
+					Position currPosition = buildPosition(positionsResult, currEmployee);
+					positions.add(currPosition);
+					if (!positionsResult.next()) {
+						break;
+					}
+					employeeId = positionsResult.getLong(EMPLOYEE_ID_COLUMN);
+				}
+				currEmployee.setPositions(positions);
+			}
+
+			return employees;
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (CommandException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				result.close();
+				positionsResult.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -178,7 +163,7 @@ public class EmployeesDAOJdbc implements EmployeesDAO {
 			}
 		}
 		
-		return employees;
+		return null;
 	}
 	
 	private static Employee buildEmployee(ResultSet result) throws SQLException {
@@ -218,6 +203,41 @@ public class EmployeesDAOJdbc implements EmployeesDAO {
 		position.setOffice(office);
 		
 		return position;
+	}
+
+	public List<Employee> getEmployees() {
+		List<Employee> employees = new ArrayList<Employee>();
+		return employees;
+	}
+
+	public List<Position> getPositions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Office> getOffices() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Country> getCountries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<City> getCities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Adress> getAdresses() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Company> getCompanies() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public void saveCities(Collection<City> cities) {

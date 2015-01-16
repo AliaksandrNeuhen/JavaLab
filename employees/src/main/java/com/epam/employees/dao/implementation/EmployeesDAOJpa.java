@@ -20,11 +20,46 @@ import com.epam.employees.entity.Employee;
 import com.epam.employees.entity.Office;
 import com.epam.employees.entity.Position;
 
-public class EmployeesDAOJpa implements EmployeesDAO {
+public final class EmployeesDAOJpa implements EmployeesDAO {
 
-	public EntityManager entityManager = Persistence.createEntityManagerFactory("emp")
-			.createEntityManager();
+	private static final String EMPLOYEES_PU = "emp";
+	private static final String ADRESS_FIELD = "adress";
+	private static final String CITY_FIELD = "city";
+	private static final String COUNTRY_FIELD = "country";
 	
+	private final static EntityManager entityManager = Persistence
+			.createEntityManagerFactory(EMPLOYEES_PU).createEntityManager();
+
+	public List<Employee> getEmployees(Integer firstResult,
+			Integer countOfResults) {
+		return getData(Employee.class, firstResult, countOfResults);
+	}
+
+	public <T> List<T> getData(Class<T> persistenceClass, Integer firstResult, Integer maxResults) {
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		// Get criteria builder used to construct criteria queries
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		// Create criteria query
+		CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(persistenceClass);
+		// Create and add a query root corresponding to the given entity
+		Root<T> rootEntry = criteriaQuery.from(persistenceClass);
+		// Create a fetch join to the adress, city and country attributes
+		// using an inner join
+		rootEntry.fetch(ADRESS_FIELD).fetch(CITY_FIELD).fetch(COUNTRY_FIELD);
+		// Specify the item that is to be returned in the query result
+		CriteriaQuery<T> list = criteriaQuery.select(rootEntry);
+		// Create an instance of TypedQuery for executing a criteria query
+		TypedQuery<T> listQuery = entityManager.createQuery(list);
+		// Set first result and amount of results to fetch
+		listQuery.setFirstResult(firstResult);
+		listQuery.setMaxResults(maxResults);
+		// Execute a SELECT query and get the query results as a list
+		List<T> data = listQuery.getResultList();
+		transaction.commit();
+		return data;
+	}
+
 	public List<Employee> getEmployees() {
 		// TODO Auto-generated method stub
 		return null;
@@ -60,11 +95,6 @@ public class EmployeesDAOJpa implements EmployeesDAO {
 		return null;
 	}
 
-	public List<Employee> getEmployees(Integer firstResult,
-			Integer countOfResults) {
-		return getData(Employee.class, firstResult, countOfResults);
-	}
-
 	public void saveCities(Collection<City> cities) {
 		// TODO Auto-generated method stub
 
@@ -94,21 +124,4 @@ public class EmployeesDAOJpa implements EmployeesDAO {
 		// TODO Auto-generated method stub
 
 	}
-	
-	public <T> List<T> getData(Class<T> persistenceClass, Integer firstResult, Integer maxResults) {
-		EntityTransaction transaction = entityManager.getTransaction(); 
-		transaction.begin();
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(persistenceClass);
-		Root<T> rootEntry = criteriaQuery.from(persistenceClass);
-		rootEntry.fetch("adress").fetch("city").fetch("country");
-		CriteriaQuery<T> list = criteriaQuery.select(rootEntry);
-		TypedQuery<T> listQuery = entityManager.createQuery(list);
-		listQuery.setFirstResult(firstResult);
-		listQuery.setMaxResults(maxResults);
-		List<T> data = listQuery.getResultList(); 
-		transaction.commit();
-		return data;		
-	}
-
 }

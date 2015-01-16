@@ -14,24 +14,35 @@ import org.hibernate.service.ServiceRegistry;
  *
  */
 public final class HibernateUtil {
-	private static SessionFactory sessionFactory = null;
+	private static volatile SessionFactory sessionFactory = null;
 
 	/**
 	 * Creates sessionFactory
 	 */
 	private static void createSessionFactory() {
+		// Create Hibernate configuration object
 		Configuration config = new Configuration();
+		// Parse hibernate.cfg.xml and get properties and mappings from it
 		config.configure();
+
 		Properties properties = config.getProperties();
+		// Create a default registry builder
 		StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
+		// Apply settings for registry builder
 		registryBuilder.applySettings(properties);
+		// Build standard service registry
 		ServiceRegistry serviceRegistry = registryBuilder.build();
+		// Build session factory using the properties and mappings in configuration
 		sessionFactory = config.buildSessionFactory(serviceRegistry);
 	}
 
-	public static synchronized SessionFactory getSessionFactory() {
+	public static SessionFactory getSessionFactory() {
 		if (sessionFactory == null) {
-			createSessionFactory();
+			synchronized (HibernateUtil.class) {
+				if (sessionFactory == null) {
+					createSessionFactory();
+				}
+			}
 		}
 		return sessionFactory;
 	}
