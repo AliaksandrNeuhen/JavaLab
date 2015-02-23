@@ -33,14 +33,15 @@ public class App {
   }
 
   private static void createObjects() {
-    System.out.println("Creating objects...");
+    System.out.println("Creating 2 objects with 10MB array...");
     for (int i = 0; i < 2; i++) {
        objects.add(new byte[10*1024*1024]);
      }
    }
 
    private static void removeObjects() {
-     System.out.println("Removing objects...");
+     System.out.println("Program started!");
+     System.out.println("Removing objects!");
      int start = objects.size() - 1;
      int end = start - 2;
      for (int i = start; ((i >= 0) && (i > end)); i--) {
