@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="layouts/layout.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView"
+				listener="#{newsController.initNewsEdit}" />
+		</f:metadata>
+		<div id="content">
+			<div id="contentpath">
+				<h:form>
+					<h:commandLink action="#{newsController.doShowNewsList}"
+						value="#{msg['label.content_path']}" id="contentpathlink" />
+					<h:outputText value="#{msg['label.edit.content_path']}" />
+				</h:form>
+			</div>
+			<h:form id="editform">
+				<div id="newsedittable">
+					<div id="titleeditrow">
+						<div id="addcolumn1">
+							<h:outputText value="#{msg['label.title']}" />
+						</div>
+						<div id="titleeditcolumn">
+							<h:inputText value="#{newsController.newsMessage.title}"
+								id="textedittitle">
+							</h:inputText>
+							<p></p>
+						</div>
+					</div>
+					<div id="dateeditrow">
+						<div id="addcolumn1">
+							<h:outputText value="#{msg['label.date']}" />
+						</div>
+						<div id="dateeditcolumn">
+							<h:inputText value="#{newsController.newsMessage.editionDate}"
+								id="texteditdate">
+								<f:convertDateTime pattern="MM/dd/yyyy" />
+							</h:inputText>
+							<p></p>
+						</div>
+					</div>
+					<div id="briefeditrow">
+						<div id="addcolumn1">
+							<h:outputText value="#{msg['label.brief']}" />
+						</div>
+						<div id="briefeditcolumn">
+							<h:inputTextarea value="#{newsController.newsMessage.brief}"
+								id="textareaeditbrief" />
+							<p></p>
+						</div>
+					</div>
+					<div id="contenteditrow">
+						<div id="addcolumn1">
+							<h:outputText value="#{msg['label.content']}" />
+						</div>
+						<div id="contenteditcolumn">
+							<h:inputTextarea value="#{newsController.newsMessage.content}"
+								id="textareaeditcontent" />
+							<p></p>
+						</div>
+					</div>
+				</div>
+				<div id="editbuttonsarea">
+					<h:commandButton action="#{newsController.doSaveNews}"
+						id="viewbuttons" onclick="return validateNews(this);"
+						styleId="viewButtons"
+						style="min-width:70px;"
+						value="#{msg['button.submit']}">
+						<f:param value="#{newsController.newsMessage.id}" name="id" />
+					</h:commandButton>
+					<h:commandButton action="#{newsController.doCancelEditing}"
+						id="cancelbutton" onclick="return checkCancel(this);"
+						styleId="cancelbutton"
+						style="min-width:70px;margin-left:10px;"
+						value="#{msg['button.cancel']}" />
+					<f:param value="#{newsController.newsMessage.id}" name="id" />
+				</div>
+			</h:form>
+		</div>
+		<h:outputScript library="js" name="editpagehelper.js"></h:outputScript>
+	</ui:define>
+</ui:composition>
+
+
+</html>

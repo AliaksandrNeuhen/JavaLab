@@ -1,0 +1,28 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>Archetype Created Web Application</display-name>
+	<servlet>
+		<servlet-name>signin</servlet-name>
+		<display-name>Sign In</display-name>
+		<servlet-class>com.epam.springapp.controller.SignInController</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>EmployeesServlet</servlet-name>
+		<display-name>EmployeesServlet</display-name>
+		<servlet-class>com.epam.employees.controller.EmployeesServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>signin</servlet-name>
+		<url-pattern>/signin</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EmployeesServlet</servlet-name>
+		<url-pattern>/emp</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
