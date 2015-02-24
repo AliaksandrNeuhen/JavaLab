@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<h:outputStylesheet library="css" name="appstyle.css"></h:outputStylesheet>
+	<ui:include src="/WEB-INF/validatemessages.xhtml"></ui:include>
+	<h:outputScript library="js" name="validate.js" target="body"></h:outputScript>
+	<title>News title</title>
+</h:head>
+<h:body>
+	<f:view locale="#{sessionScope['locale']}">
+		<div id="header">
+			<h:form>
+				<h1>
+					<h:outputText value="#{msg['header.label.news_management']}" />
+				</h1>
+				<div id="changeLanguage">
+					<h:commandLink action="#{newsController.doChangeLanguage}"
+						value="#{msg['header.label.language_en']}">
+						<f:param name="language" value="en" />
+					</h:commandLink>
+					<h:commandLink action="#{newsController.doChangeLanguage}"
+						value="#{msg['header.label.language_ru']}">
+						<f:param name="language" value="ru" />
+					</h:commandLink>
+				</div>
+			</h:form>
+		</div>
+
+		<div id="menu">
+			<div id="menuname">
+				<h:outputText value="#{msg['menu.name']}" />
+			</div>
+			<div id="menulist">
+				<h:form>
+					<ul>
+						<li><h:link outcome="index" class="menuref"
+								value="#{msg['menu.ref.news_list']}">
+							</h:link></li>
+						<li><h:link outcome="editNews" class="menuref"
+								value="#{msg['menu.ref.add_news']}">
+							</h:link></li>
+					</ul>
+				</h:form>
+			</div>
+		</div>
+		<ui:insert name="content"/>
+		<div id="footer">
+			<h:outputText value="#{msg['footer.label.info']}" />
+		</div>
+	</f:view>
+</h:body>
+</html>

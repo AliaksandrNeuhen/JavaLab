@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<!-- Service beans -->
+
+<!-- 	<wss:binding url="/newsService"> -->
+<!-- 		<wss:service> -->
+<!-- 			<ws:service bean="#newsService"></ws:service> -->
+<!-- 		</wss:service> -->
+<!-- 	</wss:binding> -->
+
+
+	<bean id="newsService" class="com.epam.testapp.service.impl.NewsService">
+		<property name="newsDao" ref="newsDaoHibernate" />
+	</bean>
+
+	<!-- DAO beans -->
+
+	<bean id="newsDaoJPA" class="com.epam.testapp.database.impl.NewsDaoJpa" />
+	<bean id="newsDaoHibernate" class="com.epam.testapp.database.impl.NewsDaoHibernate" />
+	<bean id="newsDaoJDBC" class="com.epam.testapp.database.impl.NewsDao">
+		<property name="connectionPool" ref="ConnectionPool"></property>
+	</bean>
+
+	<!-- Data sources -->
+
+	<bean id="ConnectionPool" class="com.epam.testapp.database.connection.ConnectionPool"
+		destroy-method="closeConnections">
+		<constructor-arg index="0" value="admin" />
+		<constructor-arg index="1" value="root" />
+		<constructor-arg index="2"
+			value="jdbc:oracle:thin:@//localhost:1521/xe" />
+		<constructor-arg index="3" value="10" />
+		<constructor-arg index="4"
+			value="oracle.jdbc.driver.OracleDriver" />
+		<constructor-arg index="5" value="UTF-8" />
+		<constructor-arg index="6" value="true" />
+	</bean>
+
+	<bean id="emf"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceXmlLocation" value="META-INF/persistence.xml" />
+		<property name="persistenceUnitName" value="com.epam.testapp.model.newsPU" />
+		<property name="packagesToScan" value="com.epam.testapp.model" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@//localhost:1521/xe" />
+		<property name="username" value="admin" />
+		<property name="password" value="root" />
+	</bean>
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="emf" />
+	</bean>
+	<tx:annotation-driven />
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+</beans>
