@@ -1,0 +1,26 @@
+.addProductForm {
+	width: 100%;
+	display: inline-block;
+}
+
+.formButton {
+	width: 89px;
+	position: relative;
+	left: 106px;
+	margin-top: 10px;
+}
+
+.alertMessage {
+	color: red;
+}
+
+label {
+	float: left;
+	text-align: right;
+	margin-right: 15px;
+	width: 100px;
+}
+
+form {
+	margin-bottom: 0;
+}

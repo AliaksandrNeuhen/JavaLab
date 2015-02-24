@@ -1,0 +1,27 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+	id="WebApp_ID" version="2.5">
+
+  <display-name>XML parsers application</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <listener>
+  	<listener-class>com.epam.xmltransforming.listener.ServletContextListener</listener-class>
+  </listener>
+  
+  <servlet>
+  	<description></description>
+  	<display-name>XSLTServlet</display-name>
+  	<servlet-name>XSLTServlet</servlet-name>
+  	<servlet-class>com.epam.xmltransforming.controller.XSLTServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>XSLTServlet</servlet-name>
+  	<url-pattern>/shop</url-pattern>
+  </servlet-mapping>
+</web-app>

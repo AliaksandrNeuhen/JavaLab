@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://www.shop.com/products" 
+		xmlns:tns="http://www.shop.com/products" >
+
+<element name="shop">
+	<complexType>
+		<sequence>
+			<element name="category" type="tns:CategoryType"
+				minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+</element>
+
+<complexType name="CategoryType">
+	<sequence>
+		<element name="subcategory" type="tns:SubcategoryType"
+			minOccurs="0" maxOccurs="unbounded"/>
+	</sequence>
+	<attribute type="string" name="name" use="required"/>
+</complexType>
+
+<complexType name="SubcategoryType">
+	<sequence>
+		<element name="product" type="tns:ProductType"
+			minOccurs="0" maxOccurs="unbounded"/>
+	</sequence>
+	<attribute type="string" name="name" use="required"/>
+</complexType>
+
+<complexType name="ProductType">
+	<sequence>
+		<element name="provider" type="tns:ProviderType"/>
+		<element name="model" type="tns:ModelType"/>
+		<element name="date-of-issue" type="tns:DateOfIssueType"/>
+		<element name="color" type="tns:ColorType"/>
+		<choice>
+			<element name="price" type="tns:PriceType"/>
+			<element name="notinstock" type="tns:NotInStockType"/>
+		</choice>
+	</sequence>
+	<attribute type="string" name="name" use="required"/>
+</complexType>
+
+<simpleType name="ProviderType">
+	<restriction base="string"/>
+</simpleType>
+
+<simpleType name="ModelType">
+	<restriction base="ID">
+		<pattern value="[a-zA-Z]{2}[0-9]{3}"/>
+	</restriction>
+</simpleType>
+
+<simpleType name="DateOfIssueType">
+	<restriction base="string">
+		<pattern value="[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]"/>
+	</restriction>
+</simpleType>
+
+<simpleType name="ColorType">
+	<restriction base="string"/>
+</simpleType>
+
+<simpleType name="PriceType">
+	<restriction base="integer"/>
+</simpleType>
+
+<simpleType name="NotInStockType">
+	<restriction base="string">
+		<maxLength value="0"/>
+	</restriction>
+</simpleType>
+
+</schema>
+
+
+
+
+
+
+
+
